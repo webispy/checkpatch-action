@@ -1,0 +1,14 @@
+name: Helloworld PR review
+
+on: [pull_request]
+
+jobs:
+  my_review:
+    name: Helloworld review
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run helloworld action
+      uses: actions/helloworld-docker-action@v1
