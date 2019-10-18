@@ -16,9 +16,9 @@ done
 
 echo "Check-2"
 
-for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..$GITHUB_SHA); do
+for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
     echo "Commit id $sha1"
-    #git show --format=email $sha1 | checkpatch.pl -q --no-tree -
+    git show --format=email $sha1 | checkpatch.pl -q --no-tree -
 done
 
 echo "Done"
