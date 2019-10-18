@@ -3,3 +3,7 @@ description: 'Just test review'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    msg: "hello!"
