@@ -3,5 +3,3 @@ description: 'Just test review'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  with:
-    msg: "hello!"
