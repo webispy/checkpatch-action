@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM nugulinux/devenv:bionic
 
 LABEL "com.github.actions.icon"="code"
 LABEL "com.github.actions.color"="purple"
