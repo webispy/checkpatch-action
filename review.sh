@@ -35,12 +35,12 @@ do
                 then
                     COMMENT="{ \"body\": \"$MESSAGE\" }"
                     echo "body comment: $COMMENT"
-                    curl -s $BODY_URL -H "Authorization: token ${GITHUB_TOKEN}" \
+                    curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
                         -X POST -d $COMMENT
                 else
-                    COMMENT="{ \"commit_id\": \"$COMMIT\", \"path\": \"$FILE\", \"line\": \"$LINE\", \"body\": \"$MESSAGE\" }"
+                    COMMENT="{ \"commit_id\": \"$COMMIT\", \"side\": \"right\", \"path\": \"$FILE\", \"line\": \"$LINE\", \"body\": \"$MESSAGE\" }"
                     echo "code comment: $COMMENT"
-                    curl -s $CODE_URL -H "Authorization: token ${GITHUB_TOKEN}" \
+                    curl $CODE_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
                         -X POST -d $COMMENT
                 fi
 
