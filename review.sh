@@ -36,12 +36,27 @@ do
                     COMMENT="{ \"body\": \"$MESSAGE\" }"
                     echo "body comment: $COMMENT"
                     curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
-                        -X POST -d $COMMENT
+                        -H "Content-Type: application/json" \
+                        -X POST --data "$(cat <<EOF
+{
+    "body": "${MESSAGE}"
+}
+EOF
+)"
                 else
                     COMMENT="{ \"commit_id\": \"$COMMIT\", \"side\": \"right\", \"path\": \"$FILE\", \"line\": \"$LINE\", \"body\": \"$MESSAGE\" }"
                     echo "code comment: $COMMENT"
                     curl $CODE_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
-                        -X POST -d $COMMENT
+                        -X POST --data "$(cat <<EOF
+{
+    "commit_id": "$COMMIT",
+    "side": "right",
+    "path": "${FILE}",
+    "line": "${LINE}",
+    "body": "${MESSAGE}"
+}
+EOF
+)"
                 fi
 
                 REVIEW+=($COMMENT)
