@@ -6,6 +6,7 @@ echo "REF: $GITHUB_REF"
 echo "HEAD-REF: $GITHUB_HEAD_REF"
 echo "BASE-REF: $GITHUB_BASE_REF"
 echo "SHA: $GITHUB_SHA"
+echo "TOKEN: $GITHUB_TOKEN"
 pwd
 
 

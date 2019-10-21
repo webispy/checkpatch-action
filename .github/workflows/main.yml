@@ -12,3 +12,5 @@ jobs:
       run: echo Hello, world!
     - name: Run helloworld action
       uses: webispy/helloworld-docker-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
