@@ -13,33 +13,65 @@ FOUND=0
 MESSAGE=
 REVIEW=()
 
-while read -r line
+#
+# checkpatch.pl result format
+# ---------------------------
+#
+# Template:
+# ---------
+#
+# [WARNING/ERROR]: [message for code line]
+# #[id]: FILE: [filename]:[line-number]
+# +[code]
+# [empty line]
+#
+# [WARNING/ERROR]: [message for commit itself]
+#
+# total: [n] erros, [n] warnings, [n] lines checked
+#
+# example:
+# --------
+#
+# ERROR: xxxx
+# #15: FILE: a.c:3:
+# +int main() {
+#
+# ERROR: Missing Signed-off-by: line(s)
+#
+# total: ...
+#
+
+while read -r row
 do
-    if [[ "$line" =~ ^total: ]]
-    then
+    # End of checkpatch.pl message
+    if [[ "$row" =~ ^total: ]]; then
         break
     fi
 
-    # Need message for file or commit
-    if [[ "$FOUND" == "1" ]]
-    then
-        if [[ "$line" =~ ^\# ]]
-        then
+    # Additional parsing is needed
+    if [[ "$FOUND" == "1" ]]; then
+
+        # The row is started with "#"
+        if [[ "$row" =~ ^\# ]]; then
             # message for file
-            IFS=':' read -r -a list <<< "$line"
-            FILE=${list[2]}
+
+            # Split the string using ':' seperator
+            IFS=':' read -r -a list <<< "$row"
+
+            # Trim whitespace
+            FILE=$(echo ${list[2]} | xargs)
+
             LINE=${list[3]}
         else
-            if [[ -z $line ]]
-            then
-                if [[ -z $FILE ]]
-                then
+            # An empty line means the paragraph is over.
+            if [[ -z $row ]]; then
+                if [[ -z $FILE ]]; then
                     COMMENT="{ \"body\": \"$MESSAGE\" }"
                     curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Content-Type: application/json" \
                         -X POST --data "$(cat <<EOF
 {
-    "body": "${COMMIT} - ${MESSAGE}"
+    "body": ":warning: ${COMMIT} - ${MESSAGE}"
 }
 EOF
 )"
@@ -67,8 +99,8 @@ EOF
         fi
     fi
 
-    if [[ "$line" =~ ^(WARNING|ERROR) ]]
-    then
+    # Found warning or error paragraph
+    if [[ "$line" =~ ^(WARNING|ERROR) ]]; then
         MESSAGE=$line
         FOUND=1
         FILE=
