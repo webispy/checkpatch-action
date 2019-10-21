@@ -23,13 +23,15 @@ done
 
 PR=${GITHUB_REF#"refs/pull/"}
 PRNUM=${PR%"/merge"}
+RESULT=0
 
 echo ${PR}
 echo ${PRNUM}
 
 for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
     echo "Check - Commit id $sha1"
-    /review.sh ${sha1} ${PRNUM} ${GITHUB_TOKEN}
+    /review.sh ${sha1} ${PRNUM} ${GITHUB_TOKEN} || RESULT=1;
+    echo "Result: ${RESULT}"
 done
 
 #URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
@@ -38,3 +40,5 @@ done
 #    $URL
 
 echo "Done"
+
+exit $RESULT

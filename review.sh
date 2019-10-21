@@ -5,13 +5,43 @@ COMMIT=$1
 PRNUM=$2
 TOKEN=$3
 
-RESULT=`git show --format=email $1 | checkpatch.pl --no-tree -`
+PATCHMAIL=`git show --format=email $1 | checkpatch.pl --no-tree -`
+
 BODY_URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PRNUM}/comments
 CODE_URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
 
+RESULT=0
 FOUND=0
 MESSAGE=
 REVIEW=()
+
+# write message to specific file and line
+function post_code_message()
+{
+    curl $CODE_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
+        -X POST --data "$(cat <<EOF
+{
+    "commit_id": "$COMMIT",
+    "path": "${FILE}",
+    "position": ${LINE},
+    "body": "${MESSAGE}"
+}
+EOF
+)"
+}
+
+# write message to pull-request comment
+function post_comment_message()
+{
+    curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
+        -H "Content-Type: application/json" \
+        -X POST --data "$(cat <<EOF
+{
+    "body": ":warning: ${COMMIT} - ${MESSAGE}"
+}
+EOF
+)"
+}
 
 #
 # checkpatch.pl result format
@@ -66,29 +96,13 @@ do
             # An empty line means the paragraph is over.
             if [[ -z $row ]]; then
                 if [[ -z $FILE ]]; then
-                    COMMENT="{ \"body\": \"$MESSAGE\" }"
-                    curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
-                        -H "Content-Type: application/json" \
-                        -X POST --data "$(cat <<EOF
-{
-    "body": ":warning: ${COMMIT} - ${MESSAGE}"
-}
-EOF
-)"
+                    post_comment_message
                 else
-                    COMMENT="{ \"commit_id\": \"$COMMIT\", \"side\": \"right\", \"path\": \"$FILE\", \"line\": \"$LINE\", \"body\": \"$MESSAGE\" }"
-                    echo "code comment: $COMMENT"
-                    curl $CODE_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
-                        -X POST --data "$(cat <<EOF
-{
-    "commit_id": "$COMMIT",
-    "path": "${FILE}",
-    "position": ${LINE},
-    "body": "${MESSAGE}"
-}
-EOF
-)"
+                    post_code_message
                 fi
+
+                # Code review found a problem.
+                RESULT=1
 
                 REVIEW+=($COMMENT)
                 FOUND=0
@@ -106,4 +120,6 @@ EOF
         LINE=
     fi
 
-done <<<"$RESULT"
+done <<<"$PATCHMAIL"
+
+exit $RESULT
