@@ -28,11 +28,11 @@ for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
     /review.sh $sha1
 done
 
-$PR=${GITHUB_REFS#"refs/"}
-$PRNUM=${PR%"/merge"}
+PR=${GITHUB_REFS#"refs/"}
+PRNUM=${PR%"/merge"}
 
-#$URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
-$URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PRNUM}/comments
+#URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
+URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PRNUM}/comments
 echo $URL
 
 curl -s -H "Authorization: token ${GITHUB_TOKEN} \
