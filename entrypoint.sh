@@ -4,7 +4,7 @@ echo "Start..."
 echo "Workflow: $GITHUB_WORKFLOW"
 echo "Action: $GITHUB_ACTION"
 echo "Actor: $GITHUB_ACTOR"
-echo "Repository: $GITHUIB_REPOSITORY"
+echo "Repository: $GITHUB_REPOSITORY"
 echo "Event-name: $GITHUB_EVENT_NAME"
 echo "Event-path: $GITHUB_EVENT_PATH"
 echo "Workspace: $GITHUB_WORKSPACE"
@@ -28,14 +28,17 @@ for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
     /review.sh $sha1
 done
 
-PR=${GITHUB_REFS#"refs/"}
+PR=${GITHUB_REF#"refs/pull/"}
 PRNUM=${PR%"/merge"}
+
+echo ${PR}
+echo ${PRNUM}
 
 #URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
 URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PRNUM}/comments
 echo $URL
 
-curl -s -H "Authorization: token ${GITHUB_TOKEN} \
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
     -X POST -d '{ "body": "hi" }' \
     $URL
 
