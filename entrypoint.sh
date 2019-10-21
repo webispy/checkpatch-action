@@ -21,25 +21,20 @@ for sha1 in $(git rev-list $GITHUB_SHA^..$GITHUB_SHA); do
     #git show --format=email $sha1 | checkpatch.pl -q --no-tree -
 done
 
-echo "Check-2"
-
-for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
-    echo "Commit id $sha1"
-    /review.sh $sha1
-done
-
 PR=${GITHUB_REF#"refs/pull/"}
 PRNUM=${PR%"/merge"}
 
 echo ${PR}
 echo ${PRNUM}
 
-#URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
-URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PRNUM}/comments
-echo $URL
+for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
+    echo "Check - Commit id $sha1"
+    /review.sh ${sha1} ${PRNUM} ${GITHUB_TOKEN}
+done
 
-curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-    -X POST -d '{ "body": "hi" }' \
-    $URL
+#URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/comments
+#curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+#    -X POST -d '{ "body": "hi" }' \
+#    $URL
 
 echo "Done"
