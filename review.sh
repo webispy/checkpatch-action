@@ -82,9 +82,8 @@ EOF
                         -X POST --data "$(cat <<EOF
 {
     "commit_id": "$COMMIT",
-    "side": "RIGHT",
     "path": "${FILE}",
-    "line": ${LINE},
+    "position": ${LINE},
     "body": "${MESSAGE}"
 }
 EOF
