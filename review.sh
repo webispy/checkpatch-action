@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 COMMIT=$1
 PRNUM=$2
@@ -34,12 +35,11 @@ do
                 if [[ -z $FILE ]]
                 then
                     COMMENT="{ \"body\": \"$MESSAGE\" }"
-                    echo "body comment: $COMMENT"
                     curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Content-Type: application/json" \
                         -X POST --data "$(cat <<EOF
 {
-    "body": "${MESSAGE}"
+    "body": "${COMMIT} - ${MESSAGE}"
 }
 EOF
 )"
@@ -50,9 +50,9 @@ EOF
                         -X POST --data "$(cat <<EOF
 {
     "commit_id": "$COMMIT",
-    "side": "right",
+    "side": "RIGHT",
     "path": "${FILE}",
-    "line": "${LINE}",
+    "line": ${LINE},
     "body": "${MESSAGE}"
 }
 EOF
