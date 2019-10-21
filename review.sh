@@ -100,8 +100,8 @@ EOF
     fi
 
     # Found warning or error paragraph
-    if [[ "$line" =~ ^(WARNING|ERROR) ]]; then
-        MESSAGE=$line
+    if [[ "$row" =~ ^(WARNING|ERROR) ]]; then
+        MESSAGE=$row
         FOUND=1
         FILE=
         LINE=
