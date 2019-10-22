@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y ca-certificates language-pack-en \
 	&& apt-get install -y \
 		curl \
 		git \
+		jq \
 		patch \
 		wget \
 	&& apt-get clean \
