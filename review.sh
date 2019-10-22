@@ -25,7 +25,8 @@ MESSAGE=
 # Write message to specific file and line
 function post_code_message()
 {
-    curl $CODE_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
+    echo "POST to ${CODE_URL} with ${MESSAGE}"
+    curl ${CODE_URL} -H "Authorization: token ${GITHUB_TOKEN}" \
         -X POST --data "$(cat <<EOF
 {
     "commit_id": "$COMMIT",
@@ -40,7 +41,8 @@ EOF
 # Write message to pull-request comment
 function post_comment_message()
 {
-    curl $BODY_URL -s -H "Authorization: token ${GITHUB_TOKEN}" \
+    echo "POST to ${BODY_URL} with ${MESSAGE}"
+    curl ${BODY_URL} -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "Content-Type: application/json" \
         -X POST --data "$(cat <<EOF
 {

@@ -12,13 +12,21 @@ echo "SHA: $GITHUB_SHA"
 echo "REF: $GITHUB_REF"
 echo "HEAD-REF: $GITHUB_HEAD_REF"
 echo "BASE-REF: $GITHUB_BASE_REF"
-echo "TOKEN: $GITHUB_TOKEN"
 pwd
 
 RESULT=0
 
+# Get PR number
+PR=${GITHUB_REF#"refs/pull/"}
+PRNUM=${PR%"/merge"}
+
+# Get commit list using Github API
+URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
+list=$(curl $URL -X GET -s -H "Authorization: token ${GITHUB_TOKEN}" | jq '.[].sha' -r)
+echo $list
+
 # Run review.sh on each commit in the PR
-for sha1 in $(git rev-list origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF); do
+for sha1 in $list; do
     echo "Check - Commit id $sha1"
     /review.sh ${sha1} || RESULT=1;
     echo "Result: ${RESULT}"
