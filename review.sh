@@ -26,7 +26,9 @@ MESSAGE=
 function post_code_message()
 {
     echo "POST to ${CODE_URL} with ${MESSAGE}"
-    curl ${CODE_URL} -H "Authorization: token ${GITHUB_TOKEN}" \
+    curl ${CODE_URL} -s \
+        -H "Authorization: token ${GITHUB_TOKEN}" \
+        -H "Content-Type: application/json" \
         -X POST --data "$(cat <<EOF
 {
     "commit_id": "$COMMIT",
@@ -42,7 +44,8 @@ EOF
 function post_comment_message()
 {
     echo "POST to ${BODY_URL} with ${MESSAGE}"
-    curl ${BODY_URL} -H "Authorization: token ${GITHUB_TOKEN}" \
+    curl ${BODY_URL} -s \
+        -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "Content-Type: application/json" \
         -X POST --data "$(cat <<EOF
 {
@@ -84,6 +87,7 @@ while read -r row
 do
     # End of checkpatch.pl message
     if [[ "$row" =~ ^total: ]]; then
+        echo -e "\e[1m$row\e[0m"
         break
     fi
 
@@ -103,10 +107,16 @@ do
         else
             # An empty line means the paragraph is over.
             if [[ -z $row ]]; then
-                if [[ -z $FILE ]]; then
-                    post_comment_message
+                if [[ ! -z "$GITHUB_TOKEN" ]]; then
+                    echo "Post comment to Github"
+                    if [[ -z $FILE ]]; then
+                        post_comment_message
+                    else
+                        post_code_message
+                    fi
                 else
-                    post_code_message
+                    # Output empty line
+                    echo
                 fi
 
                 # Code review found a problem.
@@ -125,8 +135,18 @@ do
         FOUND=1
         FILE=
         LINE=
+
+        echo -e "\e[1;31m$row\e[0m"
+    else
+        echo $row
     fi
 
 done <<<"$PATCHMAIL"
+
+if [[ "$RESULT" == "0" ]]; then
+    echo -e "\e[1;32m>> Success\e[0m"
+else
+    echo -e "\e[1;31m>> Failure\e[0m"
+fi
 
 exit $RESULT

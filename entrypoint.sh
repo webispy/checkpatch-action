@@ -16,22 +16,40 @@ pwd
 
 RESULT=0
 
-# Get PR number
-PR=${GITHUB_REF#"refs/pull/"}
-PRNUM=${PR%"/merge"}
+# Check the input parameter
+echo
+if [[ -z "$GITHUB_TOKEN" ]]; then
+    echo -e "\e[0;34mToken is empty. Review PR without comments.\e[0m"
+else
+    echo -e "\e[0;34mReview PR with comments.\e[0m"
+fi
 
 # Get commit list using Github API
+echo
+echo -e "\e[0;34mGet the list of commits included in the PR($GITHUB_REF).\e[0m"
+PR=${GITHUB_REF#"refs/pull/"}
+PRNUM=${PR%"/merge"}
 URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
-list=$(curl $URL -X GET -s -H "Authorization: token ${GITHUB_TOKEN}" | jq '.[].sha' -r)
-echo $list
+echo " - API endpoint: $URL"
+
+list=$(curl $URL -X GET -s | jq '.[].sha' -r)
+len=$(echo "$list" | wc -l)
+echo " - Commits $len: $list"
 
 # Run review.sh on each commit in the PR
+echo
+echo -e "\e[0;34mStart review for each commits.\e[0m"
+
+i=1
 for sha1 in $list; do
-    echo "Check - Commit id $sha1"
+    echo "-------------------------------------------------------------"
+    echo -e "[$i/$len] Check commit - \e[1;34m$sha1\e[0m"
+    echo "-------------------------------------------------------------"
     /review.sh ${sha1} || RESULT=1;
-    echo "Result: ${RESULT}"
+    echo
+    ((i++))
 done
 
-echo "Done"
+echo -e "\e[1;34mDone\e[0m"
 
 exit $RESULT
