@@ -8,5 +8,7 @@ int main()
 {
 	printf(argv[1]);
 
+    invalid;
+
 	return 0;
 }
