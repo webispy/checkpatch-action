@@ -1,5 +1,5 @@
 name: 'checkpatch.pl PR review'
-description: 'Codew review for PR using checkpatch.pl'
+description: 'Code review for PR using checkpatch.pl'
 branding:
   icon: 'check-square'
   color: 'purple'
