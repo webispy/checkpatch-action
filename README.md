@@ -6,34 +6,7 @@ The `checkpatch.pl` is a perl script to verify that your code conforms to the Li
 
 ## Action setup guide
 
-### Pull Request from owned repository
-
-.github/workflows/main.yml
-
-```yml
-name: checkpatch review
-on: [pull_request]
-jobs:
-  my_review:
-    name: checkpatch review
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run checkpatch review
-      uses: webispy/checkpatch-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-The checkpatch action will posting comments for error/warning result to the PR conversation.
-
-![check](https://raw.githubusercontent.com/wiki/webispy/checkpatch-action/img/action_conversation_comment.png)
-
-The capture image above shows the comments on the lines of code and the comments on the commit message.
-
-### Pull Request from forked repository
-
-The Github action has a limitation that doesn't have write permission for PR from forked repository. So the action cannot write a comment to the PR.
+### Pull Request
 
 .github/workflows/main.yml
 
