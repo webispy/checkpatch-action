@@ -2,7 +2,15 @@
 
 The `checkpatch.pl` is a perl script to verify that your code conforms to the Linux kernel coding style. This project uses `checkpatch.pl` to automatically review and leave comments on pull requests.
 
+## Screenshots
+
+### Result of checkpatch
+
 ![check](https://raw.githubusercontent.com/wiki/webispy/checkpatch-action/img/action_conversation_check.png)
+
+### Code annotations
+
+![annotations](https://raw.githubusercontent.com/wiki/webispy/checkpatch-action/img/action_annotations.png)
 
 ## Action setup guide
 
@@ -54,4 +62,4 @@ You can find the Dockerfile from [docker](https://github.com/webispy/checkpatch-
 
 ## License
 
-Since the `checkpatch.pl` file is a script in the Linux kernel source tree, you must follow the [GPL-2.0](https://github.com/torvalds/linux/blob/master/COPYING) license, which is your kernel license.
+The `checkpatch.pl` file is a script in the Linux kernel source tree, so **checkpatch-action** projects and forked projects must comply with the GPL-2.0 license (kernel license).
