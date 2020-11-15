@@ -3,9 +3,13 @@
 # To debug the current script, please uncomment the following 'set -x' line
 #set -x
 
+if [[ -z "$CHECKPATCH_COMMAND" ]] ; then
+    CHECKPATCH_COMMAND="checkpatch.pl --no-tree"
+fi
+
 # Generate email style commit message
 PATCH_FILE=$(git format-patch $1 -1)
-PATCHMAIL=$(checkpatch.pl --no-tree $PATCH_FILE)
+PATCHMAIL=$($CHECKPATCH_COMMAND $PATCH_FILE)
 
 # Internal state variables
 RESULT=0

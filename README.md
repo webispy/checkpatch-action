@@ -35,6 +35,25 @@ jobs:
       uses: webispy/checkpatch-action@master
 ```
 
+For using a custom checkpatch script, pass the `CHECKPATCH_COMMAND` environment
+variable. For example, for DPDK's `checkpatches.sh` script use:
+
+```yml
+name: checkpatch review
+on: [pull_request]
+jobs:
+  my_review:
+    name: checkpatch review
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run DPDK checkpatches.sh review
+      uses: webispy/checkpatch-action@master
+      env:
+        DPDK_CHECKPATCH_PATH: /usr/bin/checkpatch.pl
+        CHECKPATCH_COMMAND: ./devtools/checkpatches.sh
+```
+
 ## References
 
 ### checkpatch tool
