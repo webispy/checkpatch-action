@@ -20,8 +20,10 @@ RESULT=0
 echo
 if [[ -z "$GITHUB_TOKEN" ]]; then
     echo -e "\e[0;34mToken is empty. Review PR without comments.\e[0m"
+    HEADERS=()
 else
     echo -e "\e[0;34mReview PR with comments.\e[0m"
+    HEADERS=(-H "Authorization: Bearer $GITHUB_TOKEN")
 fi
 
 # Get commit list using Github API
@@ -32,7 +34,7 @@ PRNUM=${PR%"/merge"}
 URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
 echo " - API endpoint: $URL"
 
-list=$(curl $URL -X GET -s | jq '.[].sha' -r)
+list=$(curl $URL "${HEADERS[@]}" -X GET -s | jq '.[].sha' -r)
 len=$(echo "$list" | wc -l)
 echo " - Commits $len: $list"
 
