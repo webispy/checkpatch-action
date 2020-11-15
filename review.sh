@@ -4,7 +4,8 @@
 #set -x
 
 # Generate email style commit message
-PATCHMAIL=$(git show --format=email $1 | checkpatch.pl --no-tree -)
+PATCH_FILE=$(git format-patch $1 -1)
+PATCHMAIL=$(checkpatch.pl --no-tree $PATCH_FILE)
 
 # Internal state variables
 RESULT=0
