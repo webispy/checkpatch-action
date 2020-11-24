@@ -2,14 +2,15 @@ FROM ubuntu:bionic
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=en_US.UTF-8 \
-    LANG=$LC_ALL
+    LANG=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y ca-certificates language-pack-en \
 	&& locale-gen $LC_ALL \
 	&& dpkg-reconfigure locales \
-	&& apt-get install -y \
+	&& apt-get install -y --no-install-recommends \
 		curl \
 		codespell \
+		gawk \
 		git \
 		jq \
 		patch \
