@@ -54,6 +54,25 @@ jobs:
         CHECKPATCH_COMMAND: ./devtools/checkpatches.sh
 ```
 
+**Note:** For **private repositories** this action needs access to the `GITHUB_TOKEN`. It needs read access to `contents` and `pull-requests` as minimum permissions. For example:
+```yml
+name: checkpatch review
+on: [pull_request]
+jobs:
+  my_review:
+    name: checkpatch review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run checkpatch review
+      uses: webispy/checkpatch-action@master
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+```
+
 ## References
 
 ### checkpatch tool
