@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y ca-certificates language-pack-en \
 		wget \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
-	&& wget --no-check-certificate https://raw.githubusercontent.com/torvalds/linux/master/scripts/checkpatch.pl -P /usr/bin/ \
-	&& wget --no-check-certificate https://raw.githubusercontent.com/torvalds/linux/master/scripts/spelling.txt -P /usr/bin/ \
+	&& wget https://raw.githubusercontent.com/torvalds/linux/master/scripts/checkpatch.pl -P /usr/bin/ \
+	&& wget https://raw.githubusercontent.com/torvalds/linux/master/scripts/spelling.txt -P /usr/bin/ \
 	&& chmod +x /usr/bin/checkpatch.pl \
 	&& wget https://raw.githubusercontent.com/nugulinux/docker-devenv/bionic/patches/0001-checkpatch-add-option-for-excluding-directories.patch -P /tmp/ \
 	&& wget https://raw.githubusercontent.com/nugulinux/docker-devenv/bionic/patches/0002-ignore_const_struct_warning.patch -P /tmp/ \
