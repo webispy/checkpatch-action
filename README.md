@@ -73,6 +73,31 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
 
+### `checkpatch.pl` configuration
+
+The `checkpatch.pl` tool supports a configuration file for setting options. Just create a `.checkpatch.conf` file in the top-level directory of your project and specify options in it.
+
+https://docs.kernel.org/dev-tools/checkpatch.html#type-descriptions
+
+#### Example for `.checkpatch.conf` file
+
+```
+# This isn't actually a Linux kernel tree
+--no-tree
+
+--ignore CONFIG_DESCRIPTION
+--ignore FILE_PATH_CHANGES
+--ignore GERRIT_CHANGE_ID
+--ignore GIT_COMMIT_ID
+--ignore NEW_TYPEDEFS
+--ignore SPDX_LICENSE_TAG
+--ignore SPACING
+--ignore CONST_STRUCT
+--ignore EMBEDDED_FUNCTION_NAME
+--exclude externals
+--exclude examples
+```
+
 ## References
 
 ### checkpatch tool
