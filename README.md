@@ -117,7 +117,7 @@ From [zephyr](https://github.com/zephyrproject-rtos/zephyr) project:
 
 #### Disable warning for "No structs that should be const ..."
 
-- https://github.com/nugulinux/docker-devenv/blob/master/patches/0002-ignore_const_struct_warning.patch
+- https://github.com/nugulinux/docker-devenv/blob/bionic/patches/0002-ignore_const_struct_warning.patch
 
 ### Docker image
 
