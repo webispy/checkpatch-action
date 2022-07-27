@@ -13,6 +13,13 @@ echo "REF: $GITHUB_REF"
 echo "HEAD-REF: $GITHUB_HEAD_REF"
 echo "BASE-REF: $GITHUB_BASE_REF"
 pwd
+ls -l `pwd`
+id
+
+# Add safe directory option for github workspace to disable fatal error
+#  - docker container uid is 0(root)
+#  - github workspace directory owner is 1001
+git config --global --add safe.directory /github/workspace
 
 RESULT=0
 
