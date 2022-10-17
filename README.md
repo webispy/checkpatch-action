@@ -30,9 +30,12 @@ jobs:
     name: checkpatch review
     runs-on: ubuntu-latest
     steps:
+    - name: 'Calculate PR commits + 1'
+      run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> $GITHUB_ENV
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: ${{ env.PR_FETCH_DEPTH }}
     - name: Run checkpatch review
       uses: webispy/checkpatch-action@v9
 ```
@@ -48,9 +51,12 @@ jobs:
     name: checkpatch review
     runs-on: ubuntu-latest
     steps:
+    - name: 'Calculate PR commits + 1'
+      run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> $GITHUB_ENV
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: ${{ env.PR_FETCH_DEPTH }}
     - name: Run DPDK checkpatches.sh review
       uses: webispy/checkpatch-action@v9
       env:
@@ -71,9 +77,12 @@ jobs:
       contents: read
       pull-requests: read
     steps:
+    - name: 'Calculate PR commits + 1'
+      run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> $GITHUB_ENV
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: ${{ env.PR_FETCH_DEPTH }}
     - name: Run checkpatch review
       uses: webispy/checkpatch-action@v9
       env:
