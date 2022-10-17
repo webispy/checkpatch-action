@@ -30,9 +30,11 @@ jobs:
     name: checkpatch review
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Run checkpatch review
-      uses: webispy/checkpatch-action@master
+      uses: webispy/checkpatch-action@v9
 ```
 
 For using a custom checkpatch script, pass the `CHECKPATCH_COMMAND` environment
@@ -46,15 +48,18 @@ jobs:
     name: checkpatch review
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Run DPDK checkpatches.sh review
-      uses: webispy/checkpatch-action@master
+      uses: webispy/checkpatch-action@v9
       env:
         DPDK_CHECKPATCH_PATH: /usr/bin/checkpatch.pl
         CHECKPATCH_COMMAND: ./devtools/checkpatches.sh
 ```
 
 **Note:** For **private repositories** this action needs access to the `GITHUB_TOKEN`. It needs read access to `contents` and `pull-requests` as minimum permissions. For example:
+
 ```yml
 name: checkpatch review
 on: [pull_request]
@@ -66,9 +71,11 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Run checkpatch review
-      uses: webispy/checkpatch-action@master
+      uses: webispy/checkpatch-action@v9
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
@@ -77,11 +84,11 @@ jobs:
 
 The `checkpatch.pl` tool supports a configuration file for setting options. Just create a `.checkpatch.conf` file in the top-level directory of your project and specify options in it.
 
-https://docs.kernel.org/dev-tools/checkpatch.html#type-descriptions
+<https://docs.kernel.org/dev-tools/checkpatch.html#type-descriptions>
 
 #### Example for `.checkpatch.conf` file
 
-```
+```text
 # This isn't actually a Linux kernel tree
 --no-tree
 
@@ -104,8 +111,8 @@ https://docs.kernel.org/dev-tools/checkpatch.html#type-descriptions
 
 Following files are used to this project.
 
-- https://raw.githubusercontent.com/torvalds/linux/master/scripts/checkpatch.pl
-- https://raw.githubusercontent.com/torvalds/linux/master/scripts/spelling.txt
+- <https://raw.githubusercontent.com/torvalds/linux/master/scripts/checkpatch.pl>
+- <https://raw.githubusercontent.com/torvalds/linux/master/scripts/spelling.txt>
 
 ### Patch
 
@@ -113,11 +120,11 @@ Following files are used to this project.
 
 From [zephyr](https://github.com/zephyrproject-rtos/zephyr) project:
 
-- https://github.com/zephyrproject-rtos/zephyr/commit/92a12a19ae5ac5fdf441c690c48eed0052df326d
+- <https://github.com/zephyrproject-rtos/zephyr/commit/92a12a19ae5ac5fdf441c690c48eed0052df326d>
 
 #### Disable warning for "No structs that should be const ..."
 
-- https://github.com/nugulinux/docker-devenv/blob/bionic/patches/0002-ignore_const_struct_warning.patch
+- <https://github.com/nugulinux/docker-devenv/blob/bionic/patches/0002-ignore_const_struct_warning.patch>
 
 ### Docker image
 
