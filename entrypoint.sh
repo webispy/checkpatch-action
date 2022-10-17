@@ -13,7 +13,7 @@ echo "REF: $GITHUB_REF"
 echo "HEAD-REF: $GITHUB_HEAD_REF"
 echo "BASE-REF: $GITHUB_BASE_REF"
 pwd
-ls -l `pwd`
+ls -la `pwd`
 id
 
 # Add safe directory option for github workspace to disable fatal error

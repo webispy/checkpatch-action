@@ -57,7 +57,7 @@ do
 
         # The row is started with "#"
         if [[ "$row" =~ ^\# ]]; then
-            # Split the string using ':' seperator
+            # Split the string using ':' separator
             IFS=':' read -r -a list <<< "$row"
 
             # Get file-name after removing spaces.
