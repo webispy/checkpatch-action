@@ -25,6 +25,9 @@ RUN apt-get update && apt-get install -y ca-certificates language-pack-en \
 	&& cd /usr/bin \
 	&& cat /tmp/0001-checkpatch-add-option-for-excluding-directories.patch | patch \
 	&& cat /tmp/0002-ignore_const_struct_warning.patch | patch \
-	&& rm /tmp/*.patch
+	&& rm /tmp/*.patch \
+	# uboot variant
+	&& wget https://raw.githubusercontent.com/u-boot/u-boot/master/scripts/checkpatch.pl -O /usr/bin/checkpatch-uboot.pl \
+	&& chmod +x /usr/bin/checkpatch-uboot.pl
 
 CMD ["/bin/bash"]
