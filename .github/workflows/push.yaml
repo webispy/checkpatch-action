@@ -48,3 +48,4 @@ jobs:
             Update action Dockerfile base image with the latest digest:
             ${{ steps.build-and-push.outputs.digest }}
           signoff: true
+          base: ${{ github.event.repository.default_branch }}
