@@ -1,4 +1,4 @@
-FROM webispy/checkpatch@sha256:e84b5049be1410395ecca4547e14b1d209fb9f3327383bef83b25aeb666a8304
+FROM webispy/checkpatch@sha256:2f81922a25592cc0512a6b52a8dd69d49cc9e688bb24a3afdb341320ecff8749
 
 COPY entrypoint.sh /entrypoint.sh
 COPY review.sh /review.sh
