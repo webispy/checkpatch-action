@@ -4,7 +4,7 @@
 #set -x
 
 if [[ -z "$CHECKPATCH_COMMAND" ]] ; then
-    CHECKPATCH_COMMAND="checkpatch.pl --no-tree"
+    CHECKPATCH_COMMAND="checkpatch.pl --no-tree --ignore UNKNOWN_COMMIT_ID"
 fi
 
 # Generate email style commit message
