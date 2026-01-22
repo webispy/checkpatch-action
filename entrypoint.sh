@@ -41,8 +41,17 @@ PRNUM=${PR%"/merge"}
 URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
 echo " - API endpoint: $URL"
 
-list=$(curl $URL "${HEADERS[@]}" -X GET -s | jq '.[].sha' -r)
-len=$(echo "$list" | wc -l)
+len=0
+list=
+p=1
+while true; do
+  list_page=$(curl $URL?page=$p "${HEADERS[@]}" -X GET -s | jq '.[].sha' -r)
+  len_page=$(echo "$list_page" | grep -c .)
+  [ "$len_page" == 0 ] && break
+  list+="$list_page"$'\n'
+  ((len+=len_page))
+  ((p++))
+done
 echo " - Commits $len: $list"
 
 # Run review.sh on each commit in the PR
