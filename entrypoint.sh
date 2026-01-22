@@ -38,7 +38,7 @@ echo
 echo -e "\e[0;34mGet the list of commits included in the PR($GITHUB_REF).\e[0m"
 PR=${GITHUB_REF#"refs/pull/"}
 PRNUM=${PR%"/merge"}
-URL=https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
+URL=${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
 echo " - API endpoint: $URL"
 
 list=$(curl $URL "${HEADERS[@]}" -X GET -s | jq '.[].sha' -r)
