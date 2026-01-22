@@ -37,7 +37,8 @@ fi
 echo
 echo -e "\e[0;34mGet the list of commits included in the PR($GITHUB_REF).\e[0m"
 PR=${GITHUB_REF#"refs/pull/"}
-PRNUM=${PR%"/merge"}
+PRNUM=${PR%"/merge"}  # GitHub
+PRNUM=${PRNUM%"/head"}  # Forgejo
 URL=${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls/${PRNUM}/commits
 echo " - API endpoint: $URL"
 
